@@ -70,7 +70,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for label, code in COUNTRIES
     ])
     await update.message.reply_text(
-       "*Sector1 World Cup Event IS HERE!!!* 🌍🏆\n\nSelect where are you from 👇",
+       "*Sector1 World Cup Event IS HERE!!!* 🌍🏆\n\nWe prepared an Ebook for you to help you understand how Sector1 team is going to approach the BIGGEST EVENT on the market 🎯\n\nWe will also give you information on best picks and hot topic during the World Cup 🔥\n\nSelect where are you from 👇",
         reply_markup=keyboard,
         parse_mode="Markdown"
     )
