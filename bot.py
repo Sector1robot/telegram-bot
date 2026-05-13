@@ -17,41 +17,49 @@ MESSAGES = {
         "image": "https://i.ibb.co/1GRf0Q8F/Chat-GPT-Image-13-svi-2026-22-40-58.png",
         "welcome": "*🇭🇷🇧🇦🇷🇸🇲🇪🇸🇮 Odlično!*\n\nDa bi primio *World Cup Ebook* sa svim važnim stvarima i predikcijama, klikni ispod i poslat ćemo ga direktno na tvoj broj mobitela 👇",
         "success": "✅ *Savršeno! Registracija uspješna!* Pripremi se za World Cup tipove! 🏆🔥",
+        "wrong": "Ovo je automatska poruka, molimo klikni gore da odabereš i odgovoriš ☝",
     },
     "Sweden": {
         "image": "https://i.ibb.co/R49n42PG/Chat-GPT-Image-13-svi-2026-21-43-42.png",
         "welcome": "*🇸🇪 Välkommen!*\n\nFör att få *World Cup Ebook* med all viktig information och förutsägelser, klicka nedan så skickar vi det direkt till ditt telefonnummer 👇",
         "success": "✅ *Perfekt! Registreringen lyckades!* Gör dig redo för World Cup picks! 🏆🔥",
+        "wrong": "Detta är ett automatiskt meddelande, klicka ovan för att välja och svara ☝",
     },
     "Finland": {
         "image": "https://i.ibb.co/JRTCyM5n/Chat-GPT-Image-13-svi-2026-21-48-44.png",
         "welcome": "*🇫🇮 Tervetuloa!*\n\nSaadaksesi *World Cup Ebook* -kirjan, jossa on kaikki tärkeät tiedot ja ennusteet, klikkaa alla ja lähetämme sen suoraan puhelinnumeroosi 👇",
         "success": "✅ *Täydellinen! Rekisteröinti onnistui!* Valmistaudu World Cup vinkkeihin! 🏆🔥",
+        "wrong": "Tämä on automaattinen viesti, klikkaa yllä valitaksesi ja vastataksesi ☝",
     },
     "Norway": {
         "image": "https://i.ibb.co/rGDJzG5x/Chat-GPT-Image-13-svi-2026-21-27-00.png",
         "welcome": "*🇳🇴 Velkommen!*\n\nFor å motta *World Cup Ebook* med all viktig informasjon og spådommer, klikk nedenfor så sender vi det direkte til telefonnummeret ditt 👇",
         "success": "✅ *Perfekt! Registreringen var vellykket!* Gjør deg klar for World Cup-tips! 🏆🔥",
+        "wrong": "Dette er en automatisk melding, vennligst klikk ovenfor for å velge og svare ☝",
     },
     "Netherlands": {
         "image": "https://i.ibb.co/279T0mcN/Chat-GPT-Image-13-svi-2026-21-35-52.png",
         "welcome": "*🇳🇱 Welkom!*\n\nOm het *World Cup Ebook* te ontvangen met alle belangrijke informatie en voorspellingen, klik hieronder en we sturen het direct naar je telefoonnummer 👇",
         "success": "✅ *Perfect! Registratie geslaagd!* Maak je klaar voor World Cup tips! 🏆🔥",
+        "wrong": "Dit is een automatisch bericht, klik hierboven om te selecteren en te antwoorden ☝",
     },
     "France": {
         "image": "https://i.ibb.co/Z1vLJ6Qs/Chat-GPT-Image-13-svi-2026-21-38-56.png",
         "welcome": "*🇫🇷 Bienvenue!*\n\nPour recevoir le *World Cup Ebook* avec toutes les informations importantes et les prédictions, cliquez ci-dessous et nous vous l'enverrons directement sur votre numéro de téléphone 👇",
         "success": "✅ *Parfait! Inscription réussie!* Préparez-vous pour les picks de la Coupe du Monde! 🏆🔥",
+        "wrong": "Ceci est un message automatique, veuillez cliquer ci-dessus pour sélectionner et répondre ☝",
     },
     "Bulgaria": {
         "image": "https://i.ibb.co/S7HMvT0v/Chat-GPT-Image-13-svi-2026-21-52-43.png",
         "welcome": "*🇧🇬 Добре дошли!*\n\nЗа да получиш *World Cup Ebook* с всички важни неща и прогнози, кликни по-долу и ще го изпратим директно на телефонния ти номер 👇",
         "success": "✅ *Перфектно! Регистрацията е успешна!* Пригответе се за прогнози от Световното! 🏆🔥",
+        "wrong": "Това е автоматично съобщение, моля кликнете по-горе, за да изберете и отговорите ☝",
     },
     "Other": {
         "image": "https://i.ibb.co/gZP0135N/Chat-GPT-Image-13-svi-2026-22-26-29.png",
         "welcome": "*🌍 Welcome!*\n\nTo receive the *World Cup Ebook* with all important stuff and predictions click below and we will send it directly to your phone number 👇",
         "success": "✅ *Perfect! Registration successful!* Get ready for World Cup picks! 🏆🔥",
+        "wrong": "This is an automated message, please click above to select and answer ☝",
     },
 }
 
@@ -119,8 +127,17 @@ async def contact_received(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode="Markdown"
     )
 
+async def unknown_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    country = context.user_data.get("country", None)
+    if country:
+        reply = MESSAGES.get(country, MESSAGES["Other"])["wrong"]
+    else:
+        reply = "This is an automated message, please click above to select and answer ☝"
+    await update.message.reply_text(reply)
+
 app = ApplicationBuilder().token(TOKEN).build()
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CallbackQueryHandler(country_selected))
 app.add_handler(MessageHandler(filters.CONTACT, contact_received))
+app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, unknown_message))
 app.run_polling()
