@@ -14,7 +14,7 @@ IMAGE_URL = "https://i.ibb.co/twgTsdxf/Chat-GPT-Image-13-svi-2026-20-55-23.png"
 
 MESSAGES = {
     "Balkan": {
-        "image": "https://i.ibb.co/hRJYdnn8/Chat-GPT-Image-13-svi-2026-21-10-41.png",
+        "image": "https://i.ibb.co/1GRf0Q8F/Chat-GPT-Image-13-svi-2026-22-40-58.png",
         "welcome": "*🇭🇷🇧🇦🇷🇸🇲🇪🇸🇮 Odlično!*\n\nDa bi primio *World Cup Ebook* sa svim važnim stvarima i predikcijama, klikni ispod i poslat ćemo ga direktno na tvoj broj mobitela 👇",
         "success": "✅ *Savršeno! Registracija uspješna!* Pripremi se za World Cup tipove! 🏆🔥",
     },
