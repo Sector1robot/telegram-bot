@@ -70,7 +70,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for label, code in COUNTRIES
     ])
     await update.message.reply_text(
-       "*Sector1 World Cup Event IS HERE!!!* 🌍🏆\n\nWe prepared an Ebook for you to help you understand how Sector1 team is going to approach the BIGGEST EVENT on the market 🎯\n\nWe will also give you information on best picks and hot topic during the World Cup 🔥\n\nSelect where are you from 👇",
+        "*Sector1 World Cup Event IS HERE!!!* 🌍🏆\n\nWe prepared an Ebook for you to help you understand how Sector1 team is going to approach the BIGGEST EVENT on the market 🎯\n\nWe will also give you information on best picks and hot topic during the World Cup 🔥\n\nSelect where are you from 👇",
         reply_markup=keyboard,
         parse_mode="Markdown"
     )
@@ -107,8 +107,17 @@ async def contact_received(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode="Markdown"
     )
 
+async def get_file_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.photo:
+        file_id = update.message.photo[-1].file_id
+        await update.message.reply_text(f"Photo file_id: `{file_id}`", parse_mode="Markdown")
+    elif update.message.document:
+        file_id = update.message.document.file_id
+        await update.message.reply_text(f"Document file_id: `{file_id}`", parse_mode="Markdown")
+
 app = ApplicationBuilder().token(TOKEN).build()
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CallbackQueryHandler(country_selected))
 app.add_handler(MessageHandler(filters.CONTACT, contact_received))
+app.add_handler(MessageHandler(filters.PHOTO | filters.Document.ALL, get_file_id))
 app.run_polling()
