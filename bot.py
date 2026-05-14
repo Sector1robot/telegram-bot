@@ -119,6 +119,16 @@ async def contact_received(update: Update, context: ContextTypes.DEFAULT_TYPE):
     date = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     sheet = get_sheet()
+    existing_ids = sheet.col_values(3)
+
+    if str(telegram_id) in existing_ids:
+        msg = MESSAGES.get(country, MESSAGES["Other"])
+        await update.message.reply_text(
+            msg["success"],
+            parse_mode="Markdown"
+        )
+        return
+
     sheet.append_row([name, phone, str(telegram_id), country, date])
 
     msg = MESSAGES.get(country, MESSAGES["Other"])
